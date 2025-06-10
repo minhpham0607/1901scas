@@ -1,0 +1,16 @@
+spring:
+  profiles:
+    active: "loc"
+  application:
+    name: LMS
+
+server:
+  port: 8080
+  reactive:
+    session:
+      cookie:
+        http-only: true
+        secure: true
+  servlet:
+    session:
+      timeout: 30m  # Thi?t l?p session timeout là 30 phút
