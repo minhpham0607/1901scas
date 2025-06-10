@@ -25,7 +25,7 @@ public class SecurityConfig {
                 .csrf().disable()
                 .authorizeHttpRequests()
                 .requestMatchers("/api/users/login").permitAll()
-                .requestMatchers("/api/users/register").hasAuthority("ADMIN")
+                .requestMatchers("/api/users/register").permitAll() // ✅ Cho phép tất cả đăng ký
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
