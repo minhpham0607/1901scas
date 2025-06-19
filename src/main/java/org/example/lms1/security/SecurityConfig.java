@@ -1,4 +1,5 @@
 package org.example.lms1.security;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,13 +20,14 @@ public class SecurityConfig {
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
 
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/api/users/login").permitAll()
-                .requestMatchers("/api/users/register").permitAll() // ✅ Cho phép tất cả đăng ký
+                .requestMatchers("/api/users/login", "/api/users/register").permitAll() // Cho phép login và register
+                .requestMatchers("/api/courses/list").hasRole("admin") // Chỉ admin mới xem được danh sách khóa học
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -40,4 +42,3 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 }
-

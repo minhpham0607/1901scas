@@ -1,6 +1,5 @@
 package org.example.lms1.biz.user.model;
 
-
 import java.sql.Timestamp;
 
 public class User {
@@ -75,5 +74,33 @@ public class User {
 
     public boolean isVerified() {
         return isVerified;
+    }
+
+    public void setIsVerified(boolean isVerified) {
+        this.isVerified = isVerified;
+    }
+
+    public Timestamp getVerifiedAt() {
+        return verifiedAt;
+    }
+
+    public void setVerifiedAt(Timestamp verifiedAt) {
+        this.verifiedAt = verifiedAt;
+    }
+
+    public Timestamp getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Timestamp getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Timestamp updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }
