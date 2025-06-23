@@ -27,7 +27,7 @@ public class SecurityConfig {
                 .csrf().disable()
                 .authorizeHttpRequests()
                 .requestMatchers("/api/users/login", "/api/users/register").permitAll() // Cho phép login và register
-                .requestMatchers("/api/courses/list").hasRole("admin") // Chỉ admin mới xem được danh sách khóa học
+                .requestMatchers("/api/courses/list").hasAnyRole("admin", "instructor")
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)

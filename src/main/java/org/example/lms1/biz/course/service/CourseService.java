@@ -22,7 +22,7 @@ public class CourseService {
         course.setCategoryId(dto.getCategoryId());
         course.setInstructorId(dto.getInstructorId());
         course.setStatus(dto.getStatus());
-        course.setPrice(BigDecimal.valueOf(100.0)); // hoặc dto.getPrice() nếu muốn động
+        course.setPrice(BigDecimal.valueOf(100.0)); // hoặc dto.getPrice()
 
         return courseMapper.insertCourse(course) > 0;
     }
@@ -30,11 +30,12 @@ public class CourseService {
     public List<Course> getCourses(Integer categoryId, Integer instructorId, String status) {
         return courseMapper.findCourses(categoryId, instructorId, status);
     }
+
     public boolean updateCourse(Course course) {
         return courseMapper.updateCourse(course) > 0;
     }
+
     public boolean deleteCourse(Integer courseId) {
         return courseMapper.deleteCourse(courseId) > 0;
     }
-
 }

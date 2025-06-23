@@ -3,10 +3,12 @@ package org.example.lms1.biz.course.controller.rest;
 import org.example.lms1.biz.course.model.Course;
 import org.example.lms1.biz.course.model.dto.CourseDTO;
 import org.example.lms1.biz.course.service.CourseService;
+import org.example.lms1.security.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,37 +28,46 @@ public class CourseRestController {
         }
         return ResponseEntity.ok("Tạo khóa học thành công");
     }
-    @PreAuthorize("hasRole('admin')")
+
     @GetMapping("/list")
+    @PreAuthorize("hasRole('admin') or hasRole('instructor')")
     public ResponseEntity<List<Course>> listCourses(
             @RequestParam(required = false) Integer categoryId,
-            @RequestParam(required = false) Integer instructorId,
             @RequestParam(required = false) String status
     ) {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Integer instructorId = null;
+
+        if (principal instanceof CustomUserDetails customUser) {
+            boolean isInstructor = customUser.getAuthorities().stream()
+                    .anyMatch(a -> a.getAuthority().equals("ROLE_instructor"));
+            if (isInstructor) {
+                instructorId = customUser.getId();
+            }
+        }
+
         List<Course> courses = courseService.getCourses(categoryId, instructorId, status);
         return ResponseEntity.ok(courses);
     }
+
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateCourse(
-            @PathVariable("id") Integer courseId,
-            @RequestBody Course course
-    ) {
-        course.setCourseId(courseId); // Gán ID từ URL vào object
-        boolean success = courseService.updateCourse(course);
-        if (success) {
+    public ResponseEntity<?> updateCourse(@PathVariable("id") Integer courseId, @RequestBody Course course) {
+        course.setCourseId(courseId);
+        boolean updated = courseService.updateCourse(course);
+        if (updated) {
             return ResponseEntity.ok("Course updated successfully");
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Course not found or update failed");
-        }
-    }
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteCourse(@PathVariable("id") Integer courseId) {
-        boolean success = courseService.deleteCourse(courseId);
-        if (success) {
-            return ResponseEntity.ok("Course deleted successfully");
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Course not found");
         }
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteCourse(@PathVariable("id") Integer courseId) {
+        boolean deleted = courseService.deleteCourse(courseId);
+        if (deleted) {
+            return ResponseEntity.ok("Course deleted successfully");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Course not found");
+        }
+    }
 }
