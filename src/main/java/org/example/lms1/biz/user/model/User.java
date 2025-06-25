@@ -3,9 +3,9 @@ package org.example.lms1.biz.user.model;
 import java.sql.Timestamp;
 
 public class User {
-    private int userId;
+    private Integer userId; // ✅ Đổi từ int → Integer
     private String username;
-    private String password; // hashed password
+    private String password;
     private String email;
     private String fullName;
     private String role;
@@ -16,11 +16,11 @@ public class User {
     private Timestamp updatedAt;
 
     // Getters and Setters
-    public int getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 

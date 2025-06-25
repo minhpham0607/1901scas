@@ -28,8 +28,13 @@ public class CourseService {
     }
 
     public List<Course> getCourses(Integer categoryId, Integer instructorId, String status) {
+        System.out.println("📦 getCourses with: categoryId=" + categoryId + ", instructorId=" + instructorId + ", status=" + status);
         return courseMapper.findCourses(categoryId, instructorId, status);
     }
+    public boolean isInstructorOfCourse(int instructorId, int courseId) {
+        return courseMapper.countByInstructorAndCourse(instructorId, courseId) > 0;
+    }
+
 
     public boolean updateCourse(Course course) {
         return courseMapper.updateCourse(course) > 0;

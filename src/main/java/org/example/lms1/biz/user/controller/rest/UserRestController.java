@@ -58,6 +58,7 @@ public class UserRestController {
 
     // ✅ API lấy danh sách người dùng theo điều kiện
     @GetMapping("/list")
+    @PreAuthorize("hasRole('admin')")
     public ResponseEntity<List<User>> getUsers(
             @RequestParam(required = false) Integer userId,
             @RequestParam(required = false) String role,
@@ -84,6 +85,7 @@ public class UserRestController {
         }
     }
     @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasRole('admin')")
     public ResponseEntity<?> deleteUser(@PathVariable int id) {
         boolean deleted = userService.deleteUser(id);
         if (deleted) {

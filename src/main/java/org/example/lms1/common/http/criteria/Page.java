@@ -26,6 +26,4 @@ public class Page {
             pageNo = 1; // Default to the first page
         }
     }
-
 }
-

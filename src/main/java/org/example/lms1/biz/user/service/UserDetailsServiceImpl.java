@@ -24,8 +24,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw new UsernameNotFoundException("Không tìm thấy người dùng: " + username);
         }
 
-        // ✅ Ghi log ở đây
-        System.out.println("User loaded: id=" + user.getUserId() + ", username=" + user.getUsername());
+        System.out.println("✅ User loaded: id=" + user.getUserId() + ", username=" + user.getUsername());
 
         return new CustomUserDetails(
                 user.getUserId(),

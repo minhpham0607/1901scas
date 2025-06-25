@@ -20,17 +20,18 @@ public class SecurityConfig {
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
 
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/api/users/login", "/api/users/register").permitAll() // Cho phép login và register
+                .requestMatchers("/api/users/login", "/api/users/register").permitAll()
                 .requestMatchers("/api/courses/list").hasAnyRole("admin", "instructor")
+                .requestMatchers("/api/enrollments/**").hasAnyRole("admin", "instructor", "student")
                 .anyRequest().authenticated()
                 .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 

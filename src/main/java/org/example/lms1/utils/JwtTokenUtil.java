@@ -16,13 +16,13 @@ import java.util.function.Function;
 @Component
 public class JwtTokenUtil {
 
-    // Không encode Base64 ở đây — để raw bytes
     private static final String RAW_SECRET = "this_is_a_very_secure_secret_key_12345";
     private static final SecretKey SECRET_KEY = Keys.hmacShaKeyFor(RAW_SECRET.getBytes());
 
     public String generateToken(User user) {
         Map<String, Object> claims = new HashMap<>();
-        claims.put("role", "ROLE_" + user.getRole());
+        claims.put("role", user.getRole());               // ✅ Không thêm "ROLE_"
+        claims.put("userId", user.getUserId());           // ✅ Đảm bảo không null
         return createToken(claims, user.getUsername());
     }
 
@@ -31,7 +31,7 @@ public class JwtTokenUtil {
                 .setClaims(claims)
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60)) // 1 giờ
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60)) // 1 hour
                 .signWith(SECRET_KEY, SignatureAlgorithm.HS256)
                 .compact();
     }
@@ -43,7 +43,23 @@ public class JwtTokenUtil {
     public String extractRole(String token) {
         return extractAllClaims(token).get("role", String.class);
     }
-  
+
+    public Integer extractUserId(String token) {
+        return extractAllClaims(token).get("userId", Integer.class);
+    }
+
+    public boolean isTokenExpired(String token) {
+        return extractExpiration(token).before(new Date());
+    }
+
+    public Date extractExpiration(String token) {
+        return extractClaim(token, Claims::getExpiration);
+    }
+
+    public boolean validateToken(String token, String username) {
+        return extractUsername(token).equals(username) && !isTokenExpired(token);
+    }
+
     private Claims extractAllClaims(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(SECRET_KEY)
