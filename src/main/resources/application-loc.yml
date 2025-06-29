@@ -1,0 +1,63 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/lmstest
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:schema.sql
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+  task:
+    execution:
+      pool:
+        core-size: 5
+        max-size: 10
+        queue-capacity: 25
+      thread-name-prefix: email-async-
+
+  mail:
+    from: nhatm4621@gmail.com
+    host: smtp.gmail.com
+    port: 587
+    username: nhatm4621@gmail.com
+    password: minhiu12ha   # Thay bằng mật khẩu ứng dụng Gmail (App Password)
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls.enable: true
+          debug: true
+          timeout: 5000
+          connectiontimeout: 5000
+          writetimeout: 5000
+
+springdoc:
+  show-actuator: true
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+    url: /v3/api-docs
+
+logging:
+  level:
+    com.example.hrms.biz.commoncode.email: DEBUG
+    org.springframework.mail: DEBUG
+    org.springframework.web.cors: DEBUG
+
+mybatis:
+  type-aliases-package:
+    - com.example.hrms.biz.booking.model
+    - com.example.hrms.biz.department.model
+    - com.example.hrms.biz.meetingroom.model
+    - com.example.hrms.biz.request.model
+    - com.example.hrms.biz.role.model
+    - com.example.hrms.biz.user.model
