@@ -38,6 +38,5 @@ public interface EnrollmentsMapper {
     WHERE e.course_id = #{courseId}
 """)
     List<UserDTO> getUsersByCourseId(@Param("courseId") int courseId);
-
 }
 

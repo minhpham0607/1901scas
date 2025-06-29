@@ -34,5 +34,9 @@ public class EnrollmentsService {
     public List<UserDTO> getEnrolledUsersByCourse(int courseId) {
         return enrollmentMapper.getUsersByCourseId(courseId);
     }
+    public boolean isStudentEnrolled(int userId, int courseId) {
+        return enrollmentMapper.countEnrollment(userId, courseId) > 0;
+    }
+
 
 }

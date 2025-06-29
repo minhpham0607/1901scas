@@ -34,8 +34,6 @@ public class CourseService {
     public boolean isInstructorOfCourse(int instructorId, int courseId) {
         return courseMapper.countByInstructorAndCourse(instructorId, courseId) > 0;
     }
-
-
     public boolean updateCourse(Course course) {
         return courseMapper.updateCourse(course) > 0;
     }
