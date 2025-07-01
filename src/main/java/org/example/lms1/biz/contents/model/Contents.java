@@ -1,11 +1,39 @@
 package org.example.lms1.biz.contents.model;
 
+import jakarta.persistence.*;
+import org.example.lms1.biz.modules.model.Modules;
+
+@Entity
+@Table(name = "contents")
 public class Contents {
+
+    public enum Type {
+        video, document, text, quiz
+    }
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "content_id")
     private Integer contentId;
-    private Integer moduleId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "module_id", nullable = false, foreignKey = @ForeignKey(name = "fk_content_module"))
+    private Modules module;
+
+    @Column(nullable = false, length = 255)
     private String title;
-    private String type; // "video", "document", "text", "quiz"
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
+    private Type type;
+
+    @Column(name = "content_url", length = 255)
     private String contentUrl;
+
+    @Column
+    private Integer duration; // đơn vị: giây
+
+    @Column(name = "order_number", nullable = false)
     private Integer orderNumber;
 
     // Getters & Setters
@@ -17,12 +45,12 @@ public class Contents {
         this.contentId = contentId;
     }
 
-    public Integer getModuleId() {
-        return moduleId;
+    public Modules getModule() {
+        return module;
     }
 
-    public void setModuleId(Integer moduleId) {
-        this.moduleId = moduleId;
+    public void setModule(Modules module) {
+        this.module = module;
     }
 
     public String getTitle() {
@@ -33,11 +61,11 @@ public class Contents {
         this.title = title;
     }
 
-    public String getType() {
+    public Type getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(Type type) {
         this.type = type;
     }
 
@@ -47,6 +75,14 @@ public class Contents {
 
     public void setContentUrl(String contentUrl) {
         this.contentUrl = contentUrl;
+    }
+
+    public Integer getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Integer duration) {
+        this.duration = duration;
     }
 
     public Integer getOrderNumber() {

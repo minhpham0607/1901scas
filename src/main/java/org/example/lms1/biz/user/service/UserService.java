@@ -56,7 +56,8 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         user.setEmail(userDTO.getEmail());
         user.setFullName(userDTO.getFullName());
-        user.setRole(userDTO.getRole());
+        user.setRole(User.Role.valueOf(userDTO.getRole()));
+
 
         boolean inserted = userMapper.insertUser(user) > 0;
 
@@ -81,11 +82,13 @@ public class UserService {
         existingUser.setUsername(userDTO.getUsername());
         existingUser.setEmail(userDTO.getEmail());
         existingUser.setFullName(userDTO.getFullName());
-        existingUser.setRole(userDTO.getRole());
+        existingUser.setRole(User.Role.valueOf(userDTO.getRole()));
+
 
         if (userDTO.getIsVerified() != null) {
-            existingUser.setIsVerified(userDTO.getIsVerified());
+            existingUser.setVerified(userDTO.getIsVerified());
         }
+
 
         if (userDTO.getPassword() != null && !userDTO.getPassword().isBlank()) {
             existingUser.setPassword(passwordEncoder.encode(userDTO.getPassword()));

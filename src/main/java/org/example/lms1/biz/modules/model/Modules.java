@@ -1,10 +1,28 @@
 package org.example.lms1.biz.modules.model;
 
+import jakarta.persistence.*;
+import org.example.lms1.biz.course.model.Course;
+
+@Entity
+@Table(name = "modules")
 public class Modules {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "module_id")
     private int moduleId;
-    private int courseId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "course_id", nullable = false, foreignKey = @ForeignKey(name = "fk_module_course"))
+    private Course course;
+
+    @Column(nullable = false, length = 255)
     private String title;
+
+    @Column(columnDefinition = "TEXT")
     private String description;
+
+    @Column(name = "order_number", nullable = false)
     private int orderNumber;
 
     // Getters and Setters
@@ -16,12 +34,12 @@ public class Modules {
         this.moduleId = moduleId;
     }
 
-    public int getCourseId() {
-        return courseId;
+    public Course getCourse() {
+        return course;
     }
 
-    public void setCourseId(int courseId) {
-        this.courseId = courseId;
+    public void setCourse(Course course) {
+        this.course = course;
     }
 
     public String getTitle() {

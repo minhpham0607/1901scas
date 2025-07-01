@@ -21,7 +21,7 @@ public class CourseService {
         course.setDescription(dto.getDescription());
         course.setCategoryId(dto.getCategoryId());
         course.setInstructorId(dto.getInstructorId());
-        course.setStatus(dto.getStatus());
+        course.setStatus(Course.Status.valueOf(dto.getStatus())); // ✅
         course.setPrice(BigDecimal.valueOf(100.0)); // hoặc dto.getPrice()
 
         return courseMapper.insertCourse(course) > 0;
